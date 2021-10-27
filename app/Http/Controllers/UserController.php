@@ -16,9 +16,9 @@ class UserController extends Controller
     */
         public function signup(Request $request)
         {
-            $request->validate([
-                'password'=> 'required|confirmed',
-            ]);
+            // $request->validate([
+            //     'password'=> 'required|confirmed',
+            // ]);
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
@@ -34,6 +34,7 @@ class UserController extends Controller
             ]);
         }
 
+
      /*
     |-========================================================================-
         { - FUNCTION SIGN OUT USER - }
@@ -43,6 +44,7 @@ class UserController extends Controller
             auth()->user()->tokens()->delete();
             return response()->json(['Message' => "Sign out Successfully..."]);
         }
+
 
      /*
     |-========================================================================-
@@ -63,6 +65,42 @@ class UserController extends Controller
                 'Message' => $confirm,
                 'user' => $user,
                 'token' => $token,
+            ]);
+        }
+
+
+    /*
+    |-========================================================================-
+        { - FUNCTION GET ALL USER - }
+    |-========================================================================-
+    */
+        public function getUsers() {
+            return User::get();
+        }
+
+
+    /*
+    |-========================================================================-
+        { - FUNCTION GET USER BY ID - }
+    |-========================================================================-
+    */
+        public function getUserById($id) {
+            return User::findOrFail($id);
+        }
+
+
+    /*
+    |-========================================================================-
+        { - FUNCTION DELETE USER BY ID - }
+    |-========================================================================-
+    */
+        public function removeUser($id)
+        {
+            $Confirm_Message = "User Removed Successfully...";
+            $Index_User = User::destroy($id);
+            return response()->json([
+                $Index_User,
+                'Message' => $Confirm_Message,
             ]);
         }
 }
